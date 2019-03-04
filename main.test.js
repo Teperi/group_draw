@@ -38,4 +38,34 @@ test('각 조별 두번째 인원 체크', () => {
     }
 })
 
-test('각 조별 ')
+test('첫번째 조와 두번째 조가 안겹치는지 체크', () => {
+    // 1번째 조편성의 1개 결과 가져오기
+    firstDraw.forEach(firElement => {
+        // 1개 결과 내 이름
+        firElement.names.forEach(nameCheck => {
+            // 1번째 조편성 내 이름을 제외한 다른 이름 Array 생성
+            const firOtherNames = firElement.names.filter(ele => ele != nameCheck);
+            // 2번째 조편성의 1개 결과 가져오기
+            secondDraw.forEach(secElement => {
+                // 내 이름이 2번째 조편성에 어디에 있는지 찾기
+                function correctName(tempName) {
+                    return tempName === nameCheck;
+                }
+                const indexNum = secElement.names.findIndex(correctName);
+                // 2번째 조편성 안에서 내 이름을 찾았다면
+                if (indexNum !== -1) {
+                    //2번째 조편성 내 이름을 제외한 다른 이름 Array 생성
+                    const secOtherNames = secElement.names.filter(ele2 => ele2 != nameCheck);
+                    //다른 이름 Array 끼리 비교하면서 겹치는 이름이 있는지 확인
+                    firOtherNames.forEach(nameTest => {
+                        function overlapName(tempName2) {
+                            return tempName2 === nameTest;
+                        }
+                        const indexOverlapName = secOtherNames.find(overlapName);
+                        expect(indexOverlapName).toBeUndefined();
+                    })
+                }
+            })
+        })
+    });
+})
