@@ -44,27 +44,23 @@ module.exports = {
         return result;
     },
 
-    drawSecond: function(groupInfo, peopleArr) {
-        let count = [];
+    drawSecond: function(firstDraw) {
         let result = [];
-        groupInfo.forEach(element => {
-            count.push(element.id);
-        });
-        for (let i = 0; i < peopleArr.length; i++) {
-            count.sort(function(a, b) { return 0.5 - Math.random() });
-            if (result[count[0] - 1] == null) {
-                result[count[0] - 1] = {
-                    id: count[0],
-                    names: [peopleArr[i]]
-                };
-            } else {
-                result[count[0] - 1].names.push(peopleArr[i]);
-            }
-
-            if (result[count[0] - 1].names.length === groupInfo[count[0] - 1].maxNum) {
-                count = count.slice(1);
-            }
-        }
+        let count = 0;
+        firstDraw.forEach(element => {
+            element.names.forEach(name => {
+                if (result[count] == null) {
+                    result[count] = {
+                        id: count + 1,
+                        names: [name]
+                    };
+                } else {
+                    result[count].names.push(name);
+                }
+                count++;
+            })
+            count = 0;
+        })
         console.log(result);
         return result;
     }
